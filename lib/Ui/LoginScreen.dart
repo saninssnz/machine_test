@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:machine_test/Api.dart';
+import 'package:machine_test/Ui/MainScreen.dart';
 import 'package:machine_test/utils/Provider.dart';
 import 'package:machine_test/utils/Toast.dart';
 import 'package:machine_test/utils/Utils.dart';
@@ -43,9 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Toast.show("Enter password", context);
               }
               else {
+                FocusNode().unfocus();
+
                 login(context,usernameController.text, passwordController.text);
 
-                FocusNode().unfocus();
               }
             },
             child: Padding(
@@ -222,13 +224,16 @@ class _LoginScreenState extends State<LoginScreen> {
       var status = jsonDecode(responseString)["status"];
       if(status == true){
 
+        Provider.of<DataProvider>(context, listen: false).setAccessToken(accessToken);
+        Provider.of<DataProvider>(context, listen: false).setUrlId(urlId);
+
         Toast.show(msg, context);
 
         Navigator.of(context).push(
             MaterialPageRoute(
                 fullscreenDialog: true,
                 builder: (context) =>
-                    LoginScreen()));
+                    MainScreen()));
       }
     }
   }
