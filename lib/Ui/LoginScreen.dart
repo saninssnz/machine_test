@@ -20,6 +20,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   bool isLoading = false;
+
+  FocusNode usernameNode = new FocusNode();
+  FocusNode passwordNode = new FocusNode();
+
+
   TextEditingController usernameController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
 
@@ -37,6 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.only(bottom: 20.0),
           child: InkWell(
             onTap: () {
+
+              usernameNode.unfocus();
+              passwordNode.unfocus();
+
               if (usernameController.text.isEmpty) {
                 Toast.show("Enter Username", context);
               }
@@ -136,9 +145,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Color(0XffEAEAEA),
+                      color: Color(0XffE4E4E4),
                     ),
                     child: TextField(
+                      focusNode: usernameNode,
                       controller: usernameController,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -151,6 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Added this
                         contentPadding: EdgeInsets.all(15),
                         hintStyle: TextStyle(color: Colors.grey,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold),
                         hintText: "Enter Username",
                       ),
@@ -164,9 +175,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Color(0XffEAEAEA),
+                      color: Color(0XffE4E4E4),
                     ),
                     child: TextField(
+                      focusNode: passwordNode,
                       controller: passwordController,
                       textAlign: TextAlign.center,
                       obscureText: true,
@@ -180,6 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Added this
                         contentPadding: EdgeInsets.all(15),
                         hintStyle: TextStyle(color: Colors.grey,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold),
                         hintText: "Enter Password",
                       ),
@@ -229,9 +242,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
         Toast.show(msg, context);
 
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-                fullscreenDialog: true,
                 builder: (context) =>
                     MainScreen()));
       }

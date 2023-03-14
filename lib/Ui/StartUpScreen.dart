@@ -28,7 +28,6 @@ class StartUpScreen extends StatelessWidget {
                 onTap: (){
                   Navigator.of(context).push(
                       MaterialPageRoute(
-                        fullscreenDialog: true,
                           builder: (context) =>
                               LoginScreen()));
                 },

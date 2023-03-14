@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:machine_test/Api.dart';
+import 'package:machine_test/Ui/DriversListScreen.dart';
 import 'package:machine_test/utils/Provider.dart';
 import 'package:machine_test/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -33,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Utils.secondaryColor,
-        toolbarHeight: MediaQuery.of(context).size.height/7,
+        toolbarHeight: MediaQuery.of(context).size.height/8,
         title: SvgPicture.asset(
           "assets/images/logo.svg",
           height: MediaQuery.of(context).size.height/15,
@@ -89,36 +90,44 @@ class _MainScreenState extends State<MainScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height/4,
-                    width:  MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Utils.secondaryColor,
-                    ),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Driver", style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DriversListScreen()));
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height/4,
+                      width:  MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Utils.secondaryColor,
+                      ),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Driver", style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 30
+                                ),),
+                                Text("Manage your Driver", style: TextStyle(
+                                  fontSize: 12,
                                   color: Colors.white,
-                                  fontSize: 30
-                              ),),
-                              Text("Manage your Driver", style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white,
-                              ),),
-                            ],
+                                ),),
+                              ],
+                            ),
                           ),
-                        ),
-                        Align(
-                            alignment: Alignment.bottomRight,
-                            child: Image.asset("assets/images/driver.png",))
-                      ],
+                          Align(
+                              alignment: Alignment.bottomRight,
+                              child: Image.asset("assets/images/driver.png",))
+                        ],
+                      ),
                     ),
                   ),
                 ),
