@@ -19,7 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  bool isLoading = false;
+  // bool isLoading = false;
 
   FocusNode usernameNode = new FocusNode();
   FocusNode passwordNode = new FocusNode();
@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Consumer<DataProvider>(builder: (context, dataProvider, child) {
       return Scaffold(
-        bottomSheet: isLoading ?
+        bottomSheet: dataProvider.isLoading ?
         Center(
           child: CircularProgressIndicator(
             color: Utils.primaryColor,
@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               else {
                 FocusNode().unfocus();
 
-                login(context,usernameController.text, passwordController.text);
+                dataProvider.login(context,usernameController.text, passwordController.text);
 
               }
             },
@@ -207,46 +207,5 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
     );
-  }
-
-  Future<void> login(BuildContext context,String username, password) async {
-    var response;
-    String url = Api.BASE_URL + "LoginApi";
-
-    var body = {
-      'username': username,
-      'password': password,
-    };
-
-    isLoading=true;
-    setState(() {});
-
-    response = await http.post(Uri.parse(url), body: body);
-    isLoading = false;
-    setState(() {
-
-    });
-
-    if (response.statusCode == 200) {
-      String responseString = response.body;
-
-      var accessToken = jsonDecode(responseString)["access"];
-      var msg = jsonDecode(responseString)["message"];
-      var urlId = jsonDecode(responseString)["url_id"];
-      var name = jsonDecode(responseString)["name"];
-      var status = jsonDecode(responseString)["status"];
-      if(status == true){
-
-        Provider.of<DataProvider>(context, listen: false).setAccessToken(accessToken);
-        Provider.of<DataProvider>(context, listen: false).setUrlId(urlId);
-
-        Toast.show(msg, context);
-
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) =>
-                    MainScreen()));
-      }
-    }
   }
 }
