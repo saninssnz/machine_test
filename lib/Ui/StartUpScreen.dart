@@ -18,21 +18,19 @@ class StartUpScreen extends StatelessWidget {
           children: [
             SizedBox(height: 10),
             SvgPicture.asset(
-            "assets/images/logo.svg",
-              height: MediaQuery.of(context).size.height/10,
-              width:  MediaQuery.of(context).size.width-50,
-        ),
+              "assets/images/logo.svg",
+              height: MediaQuery.of(context).size.height / 10,
+              width: MediaQuery.of(context).size.width - 50,
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              LoginScreen()));
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width-50,
+                  width: MediaQuery.of(context).size.width - 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.white,
@@ -43,7 +41,7 @@ class StartUpScreen extends StatelessWidget {
                       child: Text(
                         "Get Started",
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w500,
                             color: Utils.primaryColor,
                             fontSize: 18),
                       ),

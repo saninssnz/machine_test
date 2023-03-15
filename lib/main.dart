@@ -6,9 +6,7 @@ import 'Ui/StartUpScreen.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<DataProvider>(
-        create: (context) => DataProvider()),
-
+    ChangeNotifierProvider<DataProvider>(create: (context) => DataProvider()),
   ], child: MyApp()));
 }
 
@@ -19,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Moovbe',
       theme: ThemeData(
         fontFamily: 'Inter',
         useMaterial3: false,
