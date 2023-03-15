@@ -36,9 +36,7 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
                             assignedDriver = value;
                             widget.driver = assignedDriver.name.toString();
                             widget.license = assignedDriver.licenseNo.toString();
-                            setState(() {
-
-                            });
+                            setState(() {});
                           }
             });
           },
