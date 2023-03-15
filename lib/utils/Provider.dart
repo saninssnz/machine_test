@@ -6,6 +6,7 @@ import 'package:machine_test/Api.dart';
 import 'package:machine_test/Model/BusModelFile.dart';
 import 'package:machine_test/Model/DriversModelFile.dart';
 import 'package:machine_test/Ui/MainScreen.dart';
+import 'package:machine_test/utils/Utils.dart';
 import 'package:provider/provider.dart';
 import 'Toast.dart';
 
@@ -13,11 +14,13 @@ class DataProvider with ChangeNotifier{
 
   String accessToken = "";
   String urlId = "";
-
+  String busId = "";
+  var status;
   bool isLoading = false;
   bool isBusLoading = false;
   bool isDriverLoading=false;
   bool isDeleting=false;
+  bool isAssigning=false;
 
   List<DriverModelFile> driversList = [];
 
@@ -28,6 +31,11 @@ class DataProvider with ChangeNotifier{
 
   setUrlId(String urlId){
     this.urlId=urlId;
+    notifyListeners();
+  }
+
+  setBusId(String busId){
+    this.busId=busId;
     notifyListeners();
   }
 
@@ -61,7 +69,9 @@ class DataProvider with ChangeNotifier{
         Provider.of<DataProvider>(context, listen: false).setAccessToken(accessToken);
         Provider.of<DataProvider>(context, listen: false).setUrlId(urlId);
 
-        Toast.show(msg, context);
+        Toast.show(msg, context,backgroundColor: Utils.primaryColor,textStyle: TextStyle(
+            color: Colors.white
+        ));
 
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -149,66 +159,51 @@ class DataProvider with ChangeNotifier{
       String responseString = response.body;
       var data = jsonDecode(responseString);
       var msg = data["message"];
-
-      Toast.show(msg, context);
+      var status = data["status"];
+      if(status == true){
+        Toast.show(msg, context,backgroundColor: Utils.primaryColor,textStyle: TextStyle(
+            color: Colors.white
+        ));
+      }
 
     }
   }
 
 
-  List<BusModelFile> myList = [
-    BusModelFile(
-        name: 'Swift Scania P-Series',
-        shortName: "KSRTC",
-        driver: "San",
-        driverLicense: "123",
-        id: 123,
-        seatLayout: "1x3"
-    ),
-    BusModelFile(
-        name: 'Swift Scania P-Series',
-        shortName: "KSRTC",
-        driver: "Sanin",
-        driverLicense: "12355",
-        id: 123,
-        seatLayout: "2x2"
-    ),
-    BusModelFile(
-        name: 'Swift Scania P-Series',
-        shortName: "KSRTC",
-        driver: "S",
-        driverLicense: "12312",
-        id: 123,
-        seatLayout: "1x3"
-    ),
-  ];
+  Future<void> assignDriver(BuildContext context, String driverId,busId) async {
+
+    var response;
+
+    isAssigning=true;
+
+    String url = Api.BASE_URL + "AssignDriverApi" + "/" + Provider.of<DataProvider>(context, listen: false).urlId + "/";
+
+    var body = {
+      'bus_id': busId,
+      'driver_id': driverId,
+    };
 
 
-  List<String> seatList = [
-    '1A', '1B',
-    '2A', '2B',
-    '3A', '3B',
-    '4A', '4B',
-    '5A', '5B',
-    '6A', '6B',
-    '7A', '7B',
-    '8A', '8B',
-    '9A', '9B',
-    '10A', '10B',
-    '11A', '11B',
-    '12A', '12B',
-    '13A', '13B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-    '14A', '14B',
-  ];
+    response =
+    await http.patch(Uri.parse(url), body: body,headers: {
+      "Authorization": "Bearer " + Provider.of<DataProvider>(context, listen: false).accessToken
+    });
+
+    isAssigning=false;
+
+
+    if (response.statusCode == 200) {
+      String responseString = response.body;
+      var data = jsonDecode(responseString);
+      var msg = data["message"];
+      status = data["status"];
+        Toast.show(msg, context,backgroundColor: Utils.primaryColor,textStyle: TextStyle(
+          color: Colors.white
+        ));
+
+
+
+    }
+  }
 
 }

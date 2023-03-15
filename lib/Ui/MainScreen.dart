@@ -43,8 +43,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         centerTitle: true,
       ),
-      body: Consumer<DataProvider>(builder: (context, dataProvider, child) {
-      return Padding(
+      body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +112,7 @@ class _MainScreenState extends State<MainScreen> {
                         Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    DriversListScreen()));
+                                    DriversListScreen(false)));
                       },
                       child: Container(
                         height: MediaQuery
@@ -164,7 +163,7 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
             SizedBox(height: 20),
-            Text(dataProvider.myList.length.toString() + " Buses Found",
+            Text( Utils.myList.length.toString() + " Buses Found",
               style: TextStyle(
                   color: Colors.grey[700],
                   fontWeight: FontWeight.w500
@@ -174,7 +173,7 @@ class _MainScreenState extends State<MainScreen> {
               child: ListView.builder(
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: dataProvider.myList.length,
+                itemCount:  Utils.myList.length,
                 itemBuilder: (BuildContext context, int position) {
                   return GestureDetector(
                     child: Padding(
@@ -205,14 +204,14 @@ class _MainScreenState extends State<MainScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      dataProvider.myList[position].shortName.toString(),
+                                      Utils.myList[position].shortName.toString(),
                                       overflow: TextOverflow.visible,
                                       style: TextStyle(
                                         color: Colors.black,
                                       ),
                                     ),
                                     Text(
-                                      dataProvider.myList[position].name.toString(),
+                                      Utils.myList[position].name.toString(),
                                       overflow: TextOverflow.visible,
                                       style: TextStyle(
                                         color: Colors.black,
@@ -226,15 +225,18 @@ class _MainScreenState extends State<MainScreen> {
                               padding: const EdgeInsets.only(right: 15.0),
                               child: InkWell(
                                 onTap: () {
+                                  Provider.of<DataProvider>(context, listen: false).
+                                  setBusId(Utils.myList[position].id.toString());
+
                                   Navigator.of(context).push(
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               BusLayoutScreen(
-                                                  dataProvider.myList[position].name.toString(),
-                                                dataProvider.myList[position].shortName.toString(),
-                                                dataProvider.myList[position].driver.toString(),
-                                                dataProvider.myList[position].driverLicense.toString(),
-                                                dataProvider.myList[position].seatLayout.toString(),
+                                                  Utils.myList[position].name.toString(),
+                                                Utils.myList[position].shortName.toString(),
+                                                Utils.myList[position].driver.toString(),
+                                                Utils.myList[position].driverLicense.toString(),
+                                                Utils.myList[position].seatLayout.toString(),
                                               )));
                                 },
                                 child: Container(
@@ -269,9 +271,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ],
         ),
-      );
-    }
-    )
+      )
     );
   }
 }

@@ -12,7 +12,8 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class DriversListScreen extends StatefulWidget {
-  const DriversListScreen({Key? key}) : super(key: key);
+ bool isAssign;
+ DriversListScreen(this.isAssign);
 
   @override
   _DriversListScreenState createState() => _DriversListScreenState();
@@ -82,15 +83,15 @@ class _DriversListScreenState extends State<DriversListScreen> {
           title: Text("Driver List"),
           centerTitle: true,
         ),
-        body: dataProvider.isLoading ?
-        Center(
-          child: CircularProgressIndicator(
-            color: Utils.primaryColor,
-          ),
-        ) :
-        Padding(
+        body: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: SingleChildScrollView(
+          child: dataProvider.isLoading ?
+          Center(
+            child: CircularProgressIndicator(
+              color: Utils.primaryColor,
+            ),
+          ) :
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -99,7 +100,6 @@ class _DriversListScreenState extends State<DriversListScreen> {
                       color: Colors.grey[700],
                       fontWeight: FontWeight.w500
                   ),),
-
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: ListView.builder(
@@ -160,11 +160,20 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                   padding: const EdgeInsets.only(right: 15.0),
                                   child: InkWell(
                                     onTap: () {
-                                      dataProvider.deleteDriver(context,
-                                          dataProvider.driversList[position].id.toString())
-                                          .then((value) {
-                                        dataProvider.getDriversList(context);
-                                      });
+                                      if(widget.isAssign == true){
+                                        dataProvider.assignDriver(context,
+                                            dataProvider.driversList[position].id.toString(),
+                                          dataProvider.busId).then((value){
+                                            Navigator.of(context).pop(dataProvider.driversList[position]);
+                                        });
+                                      }
+                                      else{
+                                        dataProvider.deleteDriver(context,
+                                            dataProvider.driversList[position].id.toString())
+                                            .then((value) {
+                                          dataProvider.getDriversList(context);
+                                        });
+                                      }
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -175,6 +184,8 @@ class _DriversListScreenState extends State<DriversListScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8.0, horizontal: 15),
                                         child: Text(
+                                          widget.isAssign==true?
+                                          "Assign":
                                           "Delete",
                                           style: TextStyle(
                                               color: Colors.white,

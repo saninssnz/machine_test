@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:machine_test/Model/DriversModelFile.dart';
+import 'package:machine_test/Ui/DriversListScreen.dart';
 import 'package:machine_test/utils/Provider.dart';
 import 'package:machine_test/utils/Utils.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +17,55 @@ class BusLayoutScreen extends StatefulWidget {
 
 class _BusLayoutScreenState extends State<BusLayoutScreen> {
 
+  bool isAssign = true;
+  DriverModelFile assignedDriver = new DriverModelFile();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet:
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DriversListScreen(isAssign))).then((value) {
+                          if(Provider.of<DataProvider>(context, listen: false).status == true){
+                            assignedDriver = value;
+                            widget.driver = assignedDriver.name.toString();
+                            widget.license = assignedDriver.licenseNo.toString();
+                            setState(() {
+
+                            });
+                          }
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Utils.primaryColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Center(
+                  child: Text(
+                    "Assign Driver",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -32,8 +80,7 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Consumer<DataProvider>(builder: (context, dataProvider, child) {
-        return Column(
+        child: Column(
           children: [
             SizedBox(height: 25),
             Padding(
@@ -91,10 +138,11 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
                         )),
                     SizedBox(height: 25,),
 
+                widget.seatLayout == "2x2"?
                 ListView.builder(
                   physics: ScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: (dataProvider.seatList.length / 4).ceil(),
+                  itemCount: ( Utils.seatList.length / 4).ceil(),
                   itemBuilder: (BuildContext context, int index) {
                     int i = index * 4;
                     return Padding(
@@ -102,15 +150,35 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          if (i < dataProvider.seatList.length)
+                          if (i <  Utils.seatList.length)
                             Image.asset("assets/images/pseat.png"),
-                          if (i + 1 < dataProvider.seatList.length)
+                          if (i + 1 <  Utils.seatList.length)
                             Image.asset("assets/images/pseat.png"),
                           SizedBox(width: 32.0),
-                          if (i + 2 < dataProvider.seatList.length)
+                          if (i + 2 <  Utils.seatList.length)
                             Image.asset("assets/images/pseat.png"),
-                          if (i + 3 < dataProvider.seatList.length)
+                          if (i + 3 <  Utils.seatList.length)
                             Image.asset("assets/images/pseat.png"),
+                        ],
+                      ),
+                    );
+                  },
+                ):
+                ListView.builder(
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: ( Utils.seatList.length / 4).ceil(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 16.0,left: 15,right: 22),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image.asset("assets/images/pseat.png"),
+                          SizedBox(width: 32.0),
+                          Image.asset("assets/images/pseat.png"),
+                          Image.asset("assets/images/pseat.png"),
+                          Image.asset("assets/images/pseat.png"),
                         ],
                       ),
                     );
@@ -122,9 +190,7 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
             ),
             SizedBox(height: 20,)
           ],
-        );
-  }
-  )
+        )
       ),
     );
   }
