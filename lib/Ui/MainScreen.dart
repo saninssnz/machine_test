@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:machine_test/Api.dart';
 import 'package:machine_test/Model/BusModelFile.dart';
+import 'package:machine_test/Ui/BusSeatLayoutScreen.dart';
 import 'package:machine_test/Ui/DriversListScreen.dart';
 import 'package:machine_test/utils/Provider.dart';
 import 'package:machine_test/utils/Utils.dart';
@@ -225,9 +226,16 @@ class _MainScreenState extends State<MainScreen> {
                               padding: const EdgeInsets.only(right: 15.0),
                               child: InkWell(
                                 onTap: () {
-                                  // deleteDriver(context,driversList[position].id.toString()).then((value){
-                                  //   getDriversList(context);
-                                  // });
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BusLayoutScreen(
+                                                  dataProvider.myList[position].name.toString(),
+                                                dataProvider.myList[position].shortName.toString(),
+                                                dataProvider.myList[position].driver.toString(),
+                                                dataProvider.myList[position].driverLicense.toString(),
+                                                dataProvider.myList[position].seatLayout.toString(),
+                                              )));
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
