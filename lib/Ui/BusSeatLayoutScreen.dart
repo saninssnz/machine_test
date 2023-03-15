@@ -146,21 +146,21 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
                           shrinkWrap: true,
                           itemCount: (Utils.seatList.length / 4).ceil(),
                           itemBuilder: (BuildContext context, int index) {
-                            // int i = index * 4;
+                            int i = index * 4;
                             return Padding(
                               padding: EdgeInsets.only(bottom: 16.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  // if (i < Utils.seatList.length)
+                                  if (i < Utils.seatList.length)
                                     Image.asset("assets/images/pseat.png"),
-                                  // if (i + 1 < Utils.seatList.length)
+                                  if (i + 1 < Utils.seatList.length)
                                     Image.asset("assets/images/pseat.png"),
                                   SizedBox(width: 32.0),
-                                  // if (i + 2 < Utils.seatList.length)
+                                  if (i + 2 < Utils.seatList.length)
                                     Image.asset("assets/images/pseat.png"),
-                                  // if (i + 3 < Utils.seatList.length)
+                                  if (i + 3 < Utils.seatList.length)
                                     Image.asset("assets/images/pseat.png"),
                                 ],
                               ),
@@ -172,6 +172,7 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
                           shrinkWrap: true,
                           itemCount: (Utils.seatList.length / 4).ceil(),
                           itemBuilder: (BuildContext context, int index) {
+                            int i = index * 4;
                             return Padding(
                               padding: EdgeInsets.only(
                                   bottom: 16.0, left: 15, right: 22),
@@ -179,11 +180,15 @@ class _BusLayoutScreenState extends State<BusLayoutScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Image.asset("assets/images/pseat.png"),
+                                  if (i < Utils.seatList.length)
+                                    Image.asset("assets/images/pseat.png"),
                                   SizedBox(width: 32.0),
-                                  Image.asset("assets/images/pseat.png"),
-                                  Image.asset("assets/images/pseat.png"),
-                                  Image.asset("assets/images/pseat.png"),
+                                  if (i + 1 < Utils.seatList.length)
+                                    Image.asset("assets/images/pseat.png"),
+                                  if (i + 2 < Utils.seatList.length)
+                                    Image.asset("assets/images/pseat.png"),
+                                  if (i + 3 < Utils.seatList.length)
+                                    Image.asset("assets/images/pseat.png"),
                                 ],
                               ),
                             );
